@@ -81,7 +81,7 @@ class adsb_rx_block (gr.top_block):
       
     elif options.rtlsdr: #RTLSDR dongle
         import osmosdr
-        self.u = osmosdr.source_c()
+        self.u = osmosdr.source_c(options.rtlsdr_arg)
         self.u.set_sample_rate(2.4e6) #fixed for RTL dongles
         if not self.u.set_center_freq(options.freq):
             print "Failed to set initial frequency"
@@ -171,6 +171,8 @@ if __name__ == '__main__':
                       help="FlightGear server to send aircraft data, in format host:port")
   parser.add_option("-d","--rtlsdr", action="store_true", default=False,
                       help="Use RTLSDR dongle instead of UHD source")
+  parser.add_option("-D","--rtlsdr_arg", type="string", default="",
+                    help="RTLSDR additional argument (for instance: 'rtl_tcp=127.0.0.1:1234')")
                       
   (options, args) = parser.parse_args()
 
